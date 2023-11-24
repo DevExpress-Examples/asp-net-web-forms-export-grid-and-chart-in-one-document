@@ -3,22 +3,58 @@
 [![](https://img.shields.io/badge/Open_in_DevExpress_Support_Center-FF7200?style=flat-square&logo=DevExpress&logoColor=white)](https://supportcenter.devexpress.com/ticket/details/E2226)
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
-<!-- default file list -->
-*Files to look at*:
 
-* [Default.aspx](./CS/WebSite/Default.aspx) (VB: [Default.aspx](./VB/WebSite/Default.aspx))
-* [Default.aspx.cs](./CS/WebSite/Default.aspx.cs) (VB: [Default.aspx.vb](./VB/WebSite/Default.aspx.vb))
-<!-- default file list end -->
-# How to export the ASPxGridView and WebChartControl to the same print document
+# ASP.NET Web Forms - How to export ASPxGridView and WebChartControl to the same print document
 <!-- run online -->
 **[[Run Online]](https://codecentral.devexpress.com/e2226/)**
 <!-- run online end -->
 
+This example demonstrates how to combine several ASP.NET controls in one exported document. This project shows how to apply this solution to [ASPxGridView](https://docs.devexpress.com/AspNet/DevExpress.Web.ASPxGridView) and [WebChartControl](https://docs.devexpress.com/AspNet/DevExpress.XtraCharts.Web.WebChartControl), but it is also applicable to other components that implement the [IPrintable](https://docs.devexpress.com/WindowsForms/DevExpress.XtraPrinting.IPrintable) and [IBasePrintable](https://docs.devexpress.com/CoreLibraries/DevExpress.XtraPrinting.IBasePrintable) interfaces.
+> [!NOTE]
+> This example uses the **Printing.Core** library. Make sure that you include it in your project.
 
-<p>This example illustrates how to export the ASPxGridView and WebChartControl to the same print document</p><p><strong>See Also:</strong><br />
-<a href="https://www.devexpress.com/Support/Center/p/E1164">How to export ASPxPivotGrid and bound WebChartControl to the same print document</a><br />
-<a href="https://www.devexpress.com/Support/Center/p/E3626">How to export several controls to different XLSX worksheets</a></p>
+## Implementation Details
 
-<br/>
+1. Create a [PrintableComponentLinkBase](https://docs.devexpress.com/CoreLibraries/DevExpress.XtraPrintingLinks.PrintableComponentLinkBase) object for each exported component.
+2. Specify the [PrintableComponentLinkBase.Component](https://docs.devexpress.com/CoreLibraries/DevExpress.XtraPrintingLinks.PrintableComponentLinkBase.Component) property. 
+3. Create a [CompositeLinkBase](https://docs.devexpress.com/CoreLibraries/DevExpress.XtraPrintingLinks.CompositeLinkBase) object to combine several printing links.
+4. Add `PrintableComponentLinkBase` objects to the [CompositeLinkBase.Links](https://docs.devexpress.com/CoreLibraries/DevExpress.XtraPrintingLinks.CompositeLinkBase.Links) collection. 
+5. Call the [CompositeLinkBase.ExportTo[FORMAT]](https://docs.devexpress.com/CoreLibraries/devexpress.xtraprinting.linkbase.exporttodocx.overloads) method to export the document.
 
+```csharp
+PrintingSystemBase ps = new PrintingSystemBase();
+
+PrintableComponentLinkBase link1 = new PrintableComponentLinkBase(ps);
+link1.Component = Grid;
+
+PrintableComponentLinkBase link2 = new PrintableComponentLinkBase(ps);
+Chart.DataBind();
+link2.Component = ((IChartContainer)Chart).Chart;
+
+CompositeLinkBase compositeLink = new CompositeLinkBase(ps);
+compositeLink.Links.AddRange(new object[] { link1, link2 });
+
+compositeLink.CreateDocument();
+using (MemoryStream stream = new MemoryStream()) {
+    compositeLink.PrintingSystemBase.ExportToXls(stream);
+    Response.Clear();
+    Response.Buffer = false;
+    Response.AppendHeader("Content-Type", "application/xls");
+    Response.AppendHeader("Content-Transfer-Encoding", "binary");
+    Response.AppendHeader("Content-Disposition", "attachment; filename=test.xls");
+    Response.BinaryWrite(stream.ToArray());
+    Response.End();
+}
+ps.Dispose();
+```
+
+## Files to Review
+
+* [Default.aspx](./CS/WebSite/Default.aspx) (VB: [Default.aspx](./VB/WebSite/Default.aspx))
+* [Default.aspx.cs](./CS/WebSite/Default.aspx.cs) (VB: [Default.aspx.vb](./VB/WebSite/Default.aspx.vb))
+
+## More Examples
+
+* [ASP.NET Web Forms - How to export ASPxPivotGrid and bound WebChartControl to the same print document](https://github.com/DevExpress-Examples/how-to-export-aspxpivotgrid-and-bound-webchartcontrol-to-the-same-print-document-e1164)
+* [ASP.NET Web Forms - How to export several controls to different XLSX worksheets](https://github.com/DevExpress-Examples/asp-net-web-forms-export-several-controls-to-different-sheets)
 
