@@ -55,6 +55,6 @@ ps.Dispose();
 
 ## More Examples
 
-* [ASP.NET Web Forms - How to export ASPxPivotGrid and bound WebChartControl to the same print document](https://github.com/DevExpress-Examples/how-to-export-aspxpivotgrid-and-bound-webchartcontrol-to-the-same-print-document-e1164)
-* [ASP.NET Web Forms - How to export several controls to different XLSX worksheets](https://github.com/DevExpress-Examples/asp-net-web-forms-export-several-controls-to-different-sheets)
-
+* [How to export several controls to different XLSX worksheets](https://github.com/DevExpress-Examples/asp-net-web-forms-export-several-controls-to-different-sheets)
+* [How to export ASPxPivotGrid and bound WebChartControl to the same print document](https://github.com/DevExpress-Examples/asp-net-web-forms-export-pivot-grid-and-chart-in-one-document)
+* [Grid View for Web Forms - How to export multiple grids into a single print document](https://github.com/DevExpress-Examples/asp-net-web-forms-grid-export-two-grids-in-one-document)
