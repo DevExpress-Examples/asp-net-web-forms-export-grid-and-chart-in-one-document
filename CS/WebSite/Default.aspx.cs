@@ -16,7 +16,7 @@ public partial class _Default : System.Web.UI.Page {
         PrintingSystemBase ps = new PrintingSystemBase();
 
         PrintableComponentLinkBase link1 = new PrintableComponentLinkBase(ps);
-        link1.Component = GridExporter;
+        link1.Component = Grid;
 
         PrintableComponentLinkBase link2 = new PrintableComponentLinkBase(ps);
         Chart.DataBind();
