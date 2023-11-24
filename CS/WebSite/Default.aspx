@@ -22,7 +22,6 @@
             <dx:GridViewDataTextColumn FieldName="ProductSales" VisibleIndex="1" />
         </Columns>
     </dx:ASPxGridView>
-    <dx:ASPxGridViewExporter ID="GridExporter" runat="server" GridViewID="grid" />
     <dx:WebChartControl ID="Chart" runat="server" DataSourceID="AccessDataSource1" Width="500px"
         Height="300px">
     </dx:WebChartControl>
